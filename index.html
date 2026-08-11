@@ -1,2345 +1,3187 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+      content="width=device-width, initial-scale=1.0">
 
 <title>Steal Brainrot Cards</title>
 
+
 <style>
+
+/* =========================================================
+   ОСНОВА
+========================================================= */
 
 * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+}
 
-    background: #090a0e;
+body {
+
+    background: #08090d;
+
     color: white;
 
     font-family: Arial, Helvetica, sans-serif;
-    overflow: hidden;
-}
 
-/* =========================
-   ОСНОВНОЙ ЭКРАН
-========================= */
-
-#app {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.page {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
     overflow-x: hidden;
-
-    scrollbar-width: none;
 }
 
-.page::-webkit-scrollbar {
-    display: none;
+
+/*
+    Когда открывается пак,
+    прокрутка полностью блокируется.
+*/
+
+body.opening-lock {
+    overflow: hidden;
+
+    touch-action: none;
 }
 
-/* =========================
-   ВЕРХНЯЯ ПАНЕЛЬ
-========================= */
 
-.top {
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+
     width: 100%;
-    min-height: 92px;
 
-    display: grid;
-    grid-template-columns: 72px 1fr 180px;
-    align-items: center;
+    height: 150px;
 
-    padding: 10px 18px;
+    background: #0b0c10;
 
-    border-bottom: 4px solid #444858;
-}
-
-.menuButton {
-    width: 62px;
-    height: 62px;
-
-    background: #16171c;
-    border: 3px solid #292b32;
-    border-radius: 4px;
+    border-bottom: 4px solid #555a70;
 
     display: flex;
+
     align-items: center;
-    justify-content: center;
 
-    cursor: pointer;
+    padding: 15px;
 
-    transition: transform .12s ease;
+    gap: 15px;
+
+    position: relative;
+
+    z-index: 10;
 }
 
-.menuButton:hover {
-    transform: scale(1.05);
-}
 
-.menuButton img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-}
-
-/* Название игры */
-
-.gameTitle {
-    text-align: left;
-
-    font-size: clamp(25px, 5vw, 52px);
-    font-weight: 900;
-
-    color: #aeb5c9;
-
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-/* Профиль */
+/* =========================================================
+   ПРОФИЛЬ В HEADER
+========================================================= */
 
 .profile {
-    height: 64px;
+
+    width: 205px;
+
+    height: 105px;
+
+    background: #0d0e12;
+
+    border: 2px solid #191b21;
 
     display: flex;
+
     align-items: center;
-    justify-content: flex-end;
+
+    padding: 8px;
 
     gap: 8px;
+
+    flex-shrink: 0;
 }
 
-.profileIcon {
-    width: 54px;
-    height: 54px;
+
+.profile-icon {
+
+    width: 92px;
+
+    height: 92px;
 
     border-radius: 50%;
 
-    object-fit: cover;
-
     background: white;
-}
 
-.profileMoney {
-    min-width: 90px;
-    height: 54px;
+    color: #151515;
 
     display: flex;
-    align-items: center;
+
     justify-content: center;
 
-    background: #111217;
-    border: 2px solid #202229;
+    align-items: center;
 
-    font-size: 20px;
-    font-weight: 900;
+    text-align: center;
+
+    font-size: 18px;
+
+    font-weight: bold;
 }
 
-.profileMoney img {
-    width: 24px;
-    height: 24px;
+
+.money {
+
+    width: 92px;
+
+    height: 60px;
+
+    background: white;
+
+    color: #111;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    gap: 4px;
+}
+
+
+.money span {
+
+    color: #20b980;
+}
+
+
+/* =========================================================
+   НАЗВАНИЕ
+========================================================= */
+
+.header-title {
+
+    color: #aeb5cc;
+
+    font-size: clamp(35px, 6vw, 75px);
+
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   КРЕСТИК
+========================================================= */
+
+.header-close {
+
+    margin-left: auto;
+
+    width: 115px;
+
+    height: 115px;
+
+    background: #ff1118;
+
+    border: 5px solid #990006;
+
+    color: white;
+
+    font-size: 70px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ОБЩИЙ КОНТЕЙНЕР
+========================================================= */
+
+.page {
+
+    width: min(100%, 1000px);
+
+    margin: 0 auto;
+
+    padding: 30px 25px 60px;
+}
+
+
+/* =========================================================
+   ГЛАВНОЕ МЕНЮ
+========================================================= */
+
+#mainMenu {
+
+    display: block;
+}
+
+
+.main-menu-title {
+
+    color: #6884a0;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    letter-spacing: 5px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   КНОПКИ ГЛАВНОГО МЕНЮ
+========================================================= */
+
+.main-buttons {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+}
+
+
+.main-menu-button {
+
+    min-height: 180px;
+
+    background: #0b0d13;
+
+    border: 3px solid #202735;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 38px;
+
+    font-weight: bold;
+
+    transition: 0.15s;
+}
+
+
+.main-menu-button:hover {
+
+    background: #111722;
+
+    border-color: #3768b9;
+}
+
+
+.main-menu-button:active {
+
+    transform: scale(0.98);
+}
+
+
+/* =========================================================
+   ИКОНКИ КНОПОК
+========================================================= */
+
+.menu-icon {
+
+    display: block;
+
+    font-size: 65px;
+
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   МАГАЗИН
+========================================================= */
+
+#shopPage {
+
+    display: none;
+}
+
+
+.page-title {
+
+    color: #aeb5cc;
+
+    font-size: 45px;
+
+    font-weight: 900;
+
+    margin-bottom: 25px;
+}
+
+
+.shop-panel {
+
+    border: 3px solid #161a23;
+
+    background: #08090d;
+
+    padding: 25px;
+}
+
+
+/* =========================================================
+   ПАК В МАГАЗИНЕ
+========================================================= */
+
+.pack-shop-card {
+
+    border: 3px solid #202735;
+
+    background: #0b0d13;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+
+.pack-shop-image {
+
+    width: 430px;
+
+    height: 430px;
+
+    max-width: 90%;
+
     object-fit: contain;
 
-    margin-left: 5px;
+    display: block;
+
+    margin: 0 auto 25px;
+
+    /*
+        НЕТ background:white.
+        Поэтому прозрачный PNG останется прозрачным.
+    */
+
+    background: transparent;
+
+    cursor: pointer;
 }
 
-/* =========================
-   КНОПКИ ГЛАВНОЙ
-========================= */
 
-.navigation {
+.pack-shop-name {
+
+    color: #aeb5cc;
+
+    font-size: 38px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+
+.pack-shop-price {
+
+    color: #6884a0;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    margin-bottom: 25px;
+}
+
+
+.open-pack-page-button {
+
     width: 100%;
 
-    padding: 18px 5% 12px;
+    height: 90px;
+
+    border: none;
+
+    background: #3768b9;
+
+    color: white;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ИНВЕНТАРЬ
+========================================================= */
+
+#inventoryPage {
+
+    display: none;
+}
+
+
+.inventory-panel {
+
+    border: 3px solid #161a23;
+
+    min-height: 400px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: #6884a0;
+
+    font-size: 30px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   СТРАНИЦА ПАКА
+========================================================= */
+
+#packPage {
+
+    display: none;
+}
+
+
+.pack-window {
+
+    background: #08090d;
+
+    border: 3px solid #161a23;
+
+    padding: 25px 30px;
+}
+
+
+/* =========================================================
+   КАРТИНКА ПАКА
+========================================================= */
+
+.pack-image {
+
+    width: 460px;
+
+    height: 460px;
+
+    max-width: 90%;
+
+    display: block;
+
+    object-fit: contain;
+
+    margin: 0 auto 35px;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ИНФОРМАЦИЯ
+========================================================= */
+
+.info-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    margin-bottom: 35px;
+}
+
+
+.info-box {
+
+    border: 3px solid #171b25;
+
+    padding: 25px;
+
+    min-height: 130px;
+}
+
+
+.info-title {
+
+    color: #6884a0;
+
+    font-size: 27px;
+
+    margin-bottom: 15px;
+}
+
+
+.info-value {
+
+    font-size: 40px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   КОЛИЧЕСТВО
+========================================================= */
+
+.selection-row {
 
     display: grid;
 
     grid-template-columns: repeat(3, 1fr);
 
-    gap: 10px;
+    gap: 15px;
+
+    margin-bottom: 25px;
 }
 
-.navButton {
-    height: 88px;
 
-    border: none;
-    background: transparent;
+.select-button {
 
-    cursor: pointer;
+    height: 100px;
 
-    transition:
-        transform .12s ease,
-        filter .12s ease;
-}
+    background: #08090d;
 
-.navButton:hover {
-    transform: scale(1.035);
-    filter: brightness(1.1);
-}
-
-.navButton img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-}
-
-/* =========================
-   БЕСПЛАТНЫЙ ПАК
-========================= */
-
-.freePack {
-    margin: 15px 3% 20px;
-
-    min-height: 145px;
-
-    border: 3px solid #2c4e9b;
-
-    background: #171a38;
-
-    display: grid;
-
-    grid-template-columns: 145px 1fr;
-
-    align-items: center;
-
-    padding: 14px 20px;
-
-    position: relative;
-}
-
-.freeImage {
-    width: 120px;
-    height: 110px;
-
-    object-fit: contain;
-}
-
-.freeText {
-    min-width: 0;
-}
-
-.freeSmall {
-    font-size: 21px;
-    font-weight: 900;
-
-    color: #5e91cc;
-
-    margin-bottom: 3px;
-}
-
-.freeTitle {
-    font-size: clamp(25px, 5vw, 42px);
-
-    font-weight: 900;
-
-    white-space: nowrap;
-}
-
-.freeEvery {
-    color: #52708f;
-
-    font-size: 19px;
-    font-weight: 700;
-}
-
-.freeTimer {
-    margin-top: 15px;
-
-    color: #6381a0;
-
-    font-size: clamp(17px, 3vw, 27px);
-    font-weight: 900;
-}
-
-.freeOpen {
-    display: none;
-
-    position: absolute;
-
-    right: 18px;
-    bottom: 15px;
-
-    padding: 9px 24px;
-
-    background: #54a95a;
-
-    border: 3px solid #1e5e24;
+    border: 3px solid #202735;
 
     color: white;
 
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 35px;
+
+    font-weight: bold;
 
     cursor: pointer;
 }
 
-/* =========================
-   ПОИСК
-========================= */
 
-.searchBox {
-    margin: 0 3% 20px;
+.select-button.selected {
 
-    height: 82px;
+    background: #3768b9;
 
-    background: #15161a;
-
-    border: 4px solid #25272d;
-
-    border-radius: 4px;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 28px;
+    border-color: #487fd9;
 }
 
-.searchBox input {
-    width: 100%;
-    height: 100%;
 
-    border: none;
-    outline: none;
+/* =========================================================
+   МУТАЦИИ
+========================================================= */
 
-    background: transparent;
-
-    color: white;
-
-    font-size: 25px;
-    font-weight: 800;
-}
-
-.searchBox input::placeholder {
-    color: #65809c;
-}
-
-/* =========================
-   ЗАГОЛОВОК ПАКОВ
-========================= */
-
-.sectionTitle {
-    text-align: center;
-
-    font-size: clamp(34px, 7vw, 55px);
-
-    font-weight: 900;
-
-    margin: 22px 0 22px;
-
-    position: relative;
-}
-
-.sectionTitle::after {
-    content: "";
-
-    display: block;
-
-    width: 190px;
-    height: 4px;
-
-    margin: 8px auto 0;
-
-    background: #263c76;
-}
-
-/* =========================
-   ПАКИ
-========================= */
-
-.packs {
-    width: 100%;
-
-    padding: 0 2.7% 60px;
+.mutation-row {
 
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 1fr);
 
-    gap: 16px 20px;
+    gap: 12px;
+
+    margin-bottom: 30px;
 }
 
-.pack {
-    min-width: 0;
 
-    background: #05060a;
+.mutation-button {
 
-    border: 2px solid #171920;
+    height: 95px;
 
-    padding: 14px 16px 16px;
+    background: #08090d;
 
-    min-height: 360px;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-
-    transition:
-        transform .12s ease,
-        border-color .12s ease;
-}
-
-.pack:hover {
-    transform: scale(1.015);
-
-    border-color: #292c38;
-}
-
-/* картинка пака */
-
-.packImage {
-    width: 82%;
-    aspect-ratio: 1 / 1;
-
-    object-fit: contain;
-
-    margin: 0 auto 12px;
-
-    /* ВАЖНО:
-       никаких белых фонов */
-    background: transparent;
-}
-
-/* если картинки пока нет */
-
-.packImage.placeholder {
-    background: transparent;
-}
-
-/* название */
-
-.packName {
-    width: 100%;
-
-    min-height: 48px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    font-size: clamp(18px, 3.4vw, 30px);
-
-    font-weight: 900;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    border-bottom: 3px solid #171921;
-
-    padding-bottom: 9px;
-}
-
-/* нижняя строка */
-
-.packBottom {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-top: 12px;
-}
-
-.itemsCount {
-    color: #64809d;
-
-    font-size: clamp(15px, 2.8vw, 22px);
-
-    font-weight: 700;
-
-    white-space: nowrap;
-}
-
-.priceButton {
-    min-width: 105px;
-    height: 48px;
-
-    background: transparent;
-
-    border: none;
-
-    color: white;
-
-    font-size: clamp(20px, 3.4vw, 30px);
-
-    font-weight: 900;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
-
-    cursor: pointer;
-
-    transition: transform .12s ease;
-}
-
-.priceButton:hover {
-    transform: scale(1.06);
-}
-
-.priceButton img {
-    width: 38px;
-    height: 38px;
-
-    object-fit: contain;
-}
-
-/* =========================
-   МАГАЗИН
-========================= */
-
-#shopPage {
-    display: none;
-
-    width: 100%;
-    height: 100%;
-
-    overflow: hidden;
-}
-
-.shopHeader {
-    height: 105px;
-
-    flex-shrink: 0;
-
-    display: grid;
-
-    grid-template-columns: 1fr 110px;
-
-    align-items: center;
-
-    border-bottom: 4px solid #444858;
-
-    padding: 0 24px;
-}
-
-.shopTitle {
-    text-align: center;
-
-    font-size: clamp(38px, 8vw, 70px);
-
-    font-weight: 900;
-
-    color: #aeb5c9;
-}
-
-.closeButton {
-    width: 78px;
-    height: 78px;
-
-    justify-self: end;
-
-    background: #ff1010;
-
-    border: 5px solid #a90000;
-
-    color: white;
-
-    font-size: 53px;
-
-    line-height: 1;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition: transform .12s ease;
-}
-
-.closeButton:hover {
-    transform: scale(1.05);
-}
-
-/* только товары листаются */
-
-.shopScroll {
-    height: calc(100% - 105px);
-
-    overflow-y: auto;
-    overflow-x: hidden;
-
-    scrollbar-width: none;
-
-    padding: 20px 2.5% 60px;
-}
-
-.shopScroll::-webkit-scrollbar {
-    display: none;
-}
-
-/* =========================
-   МАГАЗИН — ЗАГОЛОВКИ
-========================= */
-
-.shopSectionTitle {
-    text-align: center;
-
-    font-size: clamp(34px, 7vw, 60px);
-
-    font-weight: 900;
-
-    margin: 4px 0 20px;
-}
-
-/* =========================
-   УДАЧА
-========================= */
-
-.luckBox {
-    width: 96%;
-
-    margin: 0 auto 65px;
-
-    min-height: 230px;
-
-    background-image: url("images/ФонУдачи.png");
-    background-size: cover;
-    background-position: center;
-
-    border: 4px solid #168d00;
-
-    display: grid;
-
-    grid-template-columns: 135px 1fr 220px;
-
-    align-items: center;
-
-    padding: 15px 20px;
-}
-
-.luckIcon {
-    width: 120px;
-    height: 120px;
-
-    object-fit: contain;
-}
-
-.luckText {
-    text-align: center;
-}
-
-.luckTextMain {
-    font-size: clamp(25px, 4vw, 39px);
-    font-weight: 900;
-}
-
-.luckMultiplier {
-    font-size: clamp(36px, 6vw, 58px);
-
-    font-weight: 900;
-
-    margin-top: 8px;
-}
-
-.luckMultiplier span {
-    color: yellow;
-}
-
-.luckTime {
-    font-size: clamp(22px, 4vw, 35px);
-
-    font-weight: 900;
-
-    margin-top: 10px;
-}
-
-.starButton {
-    height: 65px;
-
-    background: #59a75e;
-
-    border: 3px solid #153d18;
-
-    color: white;
+    border: 3px solid #202735;
 
     font-size: 27px;
 
-    font-weight: 900;
+    font-weight: bold;
 
     cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 8px;
 }
 
-.starButton img {
-    width: 37px;
-    height: 37px;
-    object-fit: contain;
+
+.mutation-button.selected {
+
+    background: #3768b9;
+
+    border-color: #487fd9;
 }
 
-/* =========================
-   GAMEPASSES
-========================= */
 
-.gamepasses {
+.normal-text {
+    color: white;
+}
+
+
+.gold-text {
+    color: #ffdc27;
+}
+
+
+.diamond-text {
+    color: #20bfff;
+}
+
+
+.rainbow-text {
+
+    background:
+        linear-gradient(
+            90deg,
+            red,
+            orange,
+            yellow,
+            lime,
+            cyan,
+            blue,
+            violet
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   ОТКРЫТЬ ПАК
+========================================================= */
+
+.open-button {
+
+    width: 100%;
+
+    height: 105px;
+
+    background: #3768b9;
+
+    border: none;
+
+    color: white;
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   ЧТО МОЖЕТ ВЫПАСТЬ
+========================================================= */
+
+.drops-section {
+
+    border: 3px solid #161a23;
+
+    padding: 35px 30px;
+
+    margin-top: 30px;
+}
+
+
+.section-title {
+
+    color: #6884a0;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    letter-spacing: 5px;
+
+    margin-bottom: 35px;
+}
+
+
+.drops-grid {
+
     display: grid;
 
     grid-template-columns: repeat(2, 1fr);
 
-    gap: 14px;
-
-    margin-bottom: 60px;
+    gap: 20px;
 }
 
-.gamepass {
-    min-height: 245px;
 
-    background: #565c70;
+.drop-card {
 
-    border: 4px solid #34394b;
+    min-height: 360px;
+
+    border: 3px solid #171b25;
+
+    padding: 25px;
 
     position: relative;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
+    text-align: center;
 }
 
-.gamepass img {
-    width: 80%;
-    height: 80%;
+
+.drop-chance {
+
+    position: absolute;
+
+    top: 25px;
+
+    right: 25px;
+
+    color: #aeb5cc;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+
+.drop-image {
+
+    width: 150px;
+
+    height: 150px;
 
     object-fit: contain;
+
+    background: transparent;
+
+    margin: 15px auto 25px;
+
+    display: block;
 }
 
-.gamepass.vip {
-    grid-column: 1 / -1;
 
-    min-height: 250px;
+.drop-name {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    color: #e3e7f3;
+
+    margin-bottom: 25px;
 }
 
-.gamepass .starButton {
-    position: absolute;
 
-    right: 12px;
-    bottom: 12px;
+.drop-price {
 
-    min-width: 145px;
+    font-size: 35px;
 
-    height: 55px;
+    font-weight: bold;
+
+    color: #6884a0;
 }
 
-.vipInfo {
-    position: absolute;
 
-    left: 15px;
-    top: 20px;
+/* =========================================================
+   ОКНО ОТКРЫТИЯ
+========================================================= */
 
-    color: #ffe000;
+/*
+    Это полностью отдельный слой.
 
-    font-size: clamp(18px, 3vw, 27px);
+    Пока он открыт, всё под ним
+    заблокировано.
+*/
+
+#openingOverlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100vw;
+
+    height: 100vh;
+
+    /*
+        РОВНО 50% затемнения.
+    */
+
+    background: rgba(0, 0, 0, 0.50);
+
+    z-index: 99999;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 15px;
+
+    /*
+        Запрещаем выделение.
+    */
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+    /*
+        Запрещаем стандартные жесты.
+    */
+
+    touch-action: none;
+}
+
+
+#openingOverlay.active {
+
+    display: flex;
+}
+
+
+/* =========================================================
+   КОНТЕЙНЕР ОТКРЫТИЯ
+========================================================= */
+
+.opening-container {
+
+    width: min(700px, 96vw);
+
+    height: min(900px, 96vh);
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+
+/*
+    Сам контейнер ничего не кликает.
+
+    Клики обрабатывает overlay.
+*/
+
+
+/* =========================================================
+   NORMAL × 1
+========================================================= */
+
+.opening-mutation {
+
+    color: #aeb5cc;
+
+    font-size: clamp(35px, 8vw, 70px);
 
     font-weight: 900;
 
     text-shadow:
-        2px 2px 0 black,
-        -1px -1px 0 black;
+        0 3px 8px black;
+
+    pointer-events: none;
 }
 
-/* =========================
-   ПАКИ В МАГАЗИНЕ
-========================= */
 
-.shopPacks {
-    display: grid;
+/* =========================================================
+   ШАНС
+========================================================= */
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.opening-chance {
 
-    gap: 16px 20px;
+    color: #aeb5cc;
 
-    margin-bottom: 60px;
+    font-size: clamp(35px, 8vw, 70px);
+
+    font-weight: 900;
+
+    text-shadow:
+        0 3px 8px black;
+
+    pointer-events: none;
 }
 
-.shopPack {
-    min-height: 360px;
 
-    background: #05060a;
+/* =========================================================
+   КАРТИНКА ОТКРЫТИЯ
+========================================================= */
 
-    border: 2px solid #171920;
+.opening-card {
 
-    padding: 14px 16px;
+    width: min(500px, 75vw);
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.shopPackImage {
-    width: 75%;
-    aspect-ratio: 1 / 1;
+    height: min(500px, 52vh);
 
     object-fit: contain;
 
     background: transparent;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    pointer-events: none;
 }
 
-.shopPackName {
-    width: 100%;
 
-    text-align: center;
+/* =========================================================
+   ПОДСКАЗКА
+========================================================= */
 
-    font-size: clamp(20px, 3.5vw, 32px);
-
-    font-weight: 900;
-
-    padding: 12px 0;
-
-    border-bottom: 3px solid #171921;
-}
-
-.shopPackBottom {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding-top: 10px;
-}
-
-.shopItems {
-    color: #64809d;
-
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.shopPrice {
-    display: flex;
-    align-items: center;
-
-    font-size: 28px;
-    font-weight: 900;
-}
-
-.shopPrice img {
-    width: 37px;
-    height: 37px;
-    margin-right: 5px;
-}
-
-/* =========================
-   МОНЕТЫ
-========================= */
-
-.coins {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 15px;
-
-    margin-bottom: 40px;
-}
-
-.coinProduct {
-    min-height: 230px;
-
-    background: #185d20;
-
-    border: 4px solid #158000;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.coinProduct img.coin {
-    width: 120px;
-    height: 120px;
-
-    object-fit: contain;
-}
-
-.coinAmount {
-    font-size: clamp(27px, 5vw, 45px);
-
-    font-weight: 900;
-
-    margin-top: -8px;
-}
-
-.coinBuy {
-    min-width: 140px;
-
-    height: 48px;
-
-    background: #59a75e;
-
-    border: 3px solid #153d18;
+.opening-hint {
 
     color: white;
 
-    font-size: 25px;
+    font-size: clamp(25px, 5vw, 45px);
+
+    font-weight: bold;
+
+    text-shadow:
+        0 3px 8px black;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   СЧЁТЧИК
+========================================================= */
+
+.opening-counter {
+
+    color: #aeb5cc;
+
+    font-size: clamp(35px, 7vw, 65px);
 
     font-weight: 900;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-shadow:
+        0 3px 8px black;
 
-    cursor: pointer;
+    pointer-events: none;
 }
 
-.coinBuy img {
-    width: 31px;
-    height: 31px;
 
-    object-fit: contain;
+/* =========================================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+========================================================= */
 
-    margin-right: 5px;
-}
+@media (max-width: 700px) {
 
-/* =========================
-   TELEGRAM PAYMENT
-========================= */
 
-.paymentMessage {
-    position: fixed;
+    .header {
 
-    left: 50%;
-    bottom: 20px;
-
-    transform: translateX(-50%);
-
-    background: #20232b;
-
-    border: 2px solid #444858;
-
-    padding: 12px 20px;
-
-    border-radius: 7px;
-
-    font-size: 16px;
-    font-weight: 700;
-
-    display: none;
-
-    z-index: 9999;
-}
-
-/* =========================
-   ТЕЛЕФОН
-========================= */
-
-@media (max-width: 650px) {
-
-    .top {
-        min-height: 72px;
-
-        grid-template-columns: 54px 1fr 130px;
-
-        padding: 7px 9px;
-    }
-
-    .menuButton {
-        width: 48px;
-        height: 48px;
-    }
-
-    .gameTitle {
-        font-size: 22px;
-    }
-
-    .profile {
-        height: 48px;
-        gap: 4px;
-    }
-
-    .profileIcon {
-        width: 39px;
-        height: 39px;
-    }
-
-    .profileMoney {
-        min-width: 66px;
-        height: 39px;
-
-        font-size: 14px;
-    }
-
-    .profileMoney img {
-        width: 18px;
-        height: 18px;
-    }
-
-    .navigation {
-        padding: 12px 4% 5px;
-        gap: 6px;
-    }
-
-    .navButton {
-        height: 63px;
-    }
-
-    .freePack {
-        min-height: 110px;
-
-        grid-template-columns: 85px 1fr;
-
-        padding: 9px 12px;
-
-        margin-left: 3%;
-        margin-right: 3%;
-    }
-
-    .freeImage {
-        width: 75px;
-        height: 75px;
-    }
-
-    .freeSmall {
-        font-size: 14px;
-    }
-
-    .freeTitle {
-        font-size: 21px;
-    }
-
-    .freeEvery {
-        font-size: 13px;
-    }
-
-    .freeTimer {
-        margin-top: 6px;
-        font-size: 14px;
-    }
-
-    .freeOpen {
-        font-size: 13px;
-        padding: 6px 12px;
-    }
-
-    .searchBox {
-        height: 57px;
-        padding: 0 15px;
-    }
-
-    .searchBox input {
-        font-size: 17px;
-    }
-
-    .sectionTitle {
-        font-size: 32px;
-        margin: 13px 0 15px;
-    }
-
-    .packs {
-        gap: 10px;
-
-        padding-left: 2.5%;
-        padding-right: 2.5%;
-    }
-
-    .pack {
-        min-height: 250px;
-
-        padding: 8px 8px 10px;
-    }
-
-    .packImage {
-        width: 82%;
-        margin-bottom: 5px;
-    }
-
-    .packName {
-        font-size: 15px;
-        min-height: 35px;
-        padding-bottom: 5px;
-    }
-
-    .packBottom {
-        margin-top: 7px;
-    }
-
-    .itemsCount {
-        font-size: 12px;
-    }
-
-    .priceButton {
-        min-width: 65px;
-        font-size: 17px;
-    }
-
-    .priceButton img {
-        width: 24px;
-        height: 24px;
-    }
-
-    /* магазин */
-
-    .shopHeader {
-        height: 72px;
-
-        grid-template-columns: 1fr 65px;
-
-        padding: 0 10px;
-    }
-
-    .shopTitle {
-        font-size: 34px;
-    }
-
-    .closeButton {
-        width: 52px;
-        height: 52px;
-
-        border-width: 3px;
-
-        font-size: 35px;
-    }
-
-    .shopScroll {
-        height: calc(100% - 72px);
-
-        padding: 12px 2.5% 40px;
-    }
-
-    .shopSectionTitle {
-        font-size: 32px;
-        margin: 8px 0 13px;
-    }
-
-    .luckBox {
-        width: 98%;
-
-        min-height: 145px;
-
-        grid-template-columns: 70px 1fr 90px;
+        height: 105px;
 
         padding: 8px;
 
-        border-width: 3px;
-
-        margin-bottom: 30px;
+        gap: 8px;
     }
 
-    .luckIcon {
-        width: 65px;
-        height: 65px;
+
+    .profile {
+
+        width: 130px;
+
+        height: 70px;
+
+        padding: 5px;
     }
 
-    .luckTextMain {
+
+    .profile-icon {
+
+        width: 60px;
+
+        height: 60px;
+
+        font-size: 12px;
+    }
+
+
+    .money {
+
+        width: 58px;
+
+        height: 42px;
+
         font-size: 16px;
     }
 
-    .luckMultiplier {
+
+    .header-title {
+
+        font-size: 27px;
+    }
+
+
+    .header-close {
+
+        width: 65px;
+
+        height: 65px;
+
+        font-size: 40px;
+
+        border-width: 3px;
+    }
+
+
+    .page {
+
+        padding: 20px 10px 40px;
+    }
+
+
+    .main-buttons {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .main-menu-button {
+
+        min-height: 140px;
+
+        font-size: 30px;
+    }
+
+
+    .menu-icon {
+
+        font-size: 50px;
+    }
+
+
+    .pack-shop-image {
+
+        width: 90vw;
+
+        height: 90vw;
+
+        max-width: 430px;
+
+        max-height: 430px;
+    }
+
+
+    .pack-window {
+
+        padding: 20px 10px;
+    }
+
+
+    .pack-image {
+
+        width: 90vw;
+
+        height: 90vw;
+
+        max-width: 460px;
+
+        max-height: 460px;
+    }
+
+
+    .info-row {
+
+        gap: 10px;
+    }
+
+
+    .info-box {
+
+        padding: 15px;
+
+        min-height: 100px;
+    }
+
+
+    .info-title {
+
+        font-size: 19px;
+    }
+
+
+    .info-value {
+
         font-size: 28px;
     }
 
-    .luckTime {
-        font-size: 15px;
+
+    .selection-row {
+
+        gap: 8px;
     }
 
-    .starButton {
-        height: 43px;
 
-        font-size: 17px;
+    .select-button {
+
+        height: 65px;
+
+        font-size: 25px;
     }
 
-    .starButton img {
-        width: 24px;
-        height: 24px;
+
+    .mutation-row {
+
+        gap: 6px;
     }
 
-    .gamepasses {
-        gap: 7px;
-        margin-bottom: 30px;
-    }
 
-    .gamepass {
-        min-height: 130px;
-    }
+    .mutation-button {
 
-    .gamepass.vip {
-        min-height: 145px;
-    }
+        height: 65px;
 
-    .gamepass .starButton {
-        right: 5px;
-        bottom: 5px;
-
-        min-width: 85px;
-        height: 36px;
-
-        font-size: 15px;
-    }
-
-    .vipInfo {
-        font-size: 12px;
-        left: 7px;
-        top: 8px;
-    }
-
-    .shopPacks {
-        gap: 10px;
-    }
-
-    .shopPack {
-        min-height: 250px;
-        padding: 8px;
-    }
-
-    .shopPackName {
-        font-size: 16px;
-        padding: 7px 0;
-    }
-
-    .shopItems {
-        font-size: 12px;
-    }
-
-    .shopPrice {
-        font-size: 17px;
-    }
-
-    .shopPrice img {
-        width: 23px;
-        height: 23px;
-    }
-
-    .coins {
-        gap: 7px;
-    }
-
-    .coinProduct {
-        min-height: 150px;
-    }
-
-    .coinProduct img.coin {
-        width: 75px;
-        height: 75px;
-    }
-
-    .coinAmount {
-        font-size: 23px;
-    }
-
-    .coinBuy {
-        min-width: 75px;
-        height: 32px;
         font-size: 16px;
     }
 
-    .coinBuy img {
-        width: 21px;
-        height: 21px;
+
+    .open-button {
+
+        height: 80px;
+
+        font-size: 27px;
     }
+
+
+    .drops-section {
+
+        padding: 25px 15px;
+    }
+
+
+    .drops-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .opening-container {
+
+        height: 92vh;
+    }
+
+
+    .opening-card {
+
+        width: 78vw;
+
+        height: 48vh;
+    }
+
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<div id="app">
 
-<!-- =========================
-     ГЛАВНАЯ
-========================= -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-<div id="mainPage" class="page">
+<header class="header">
 
-    <div class="top">
 
-        <button class="menuButton">
-            ☰
-        </button>
+    <div class="profile">
 
-        <div class="gameTitle">
-            STEAL BRAINROT CARDS
-        </div>
 
-        <div class="profile">
+        <div class="profile-icon">
 
-            <div class="profileMoney">
-                0
-                <img src="images/coin.png">
-            </div>
+            иконка<br>
+            профиля
 
         </div>
+
+
+        <div class="money">
+
+            XXX
+
+            <span>$</span>
+
+        </div>
+
 
     </div>
 
 
-    <!-- НАВИГАЦИЯ -->
+    <div class="header-title">
 
-    <div class="navigation">
-
-        <button class="navButton" id="shopButton">
-            <img src="images/Магазин.png">
-        </button>
-
-        <button class="navButton">
-            <img src="images/Инвентарь.png">
-        </button>
-
-        <button class="navButton">
-            <img src="images/Индекс.png">
-        </button>
+        STEAL BRAINROT CARDS
 
     </div>
 
 
-    <!-- БЕСПЛАТНЫЙ ПАК -->
+    <!--
+        КРЕСТИК
 
-    <div class="freePack">
+        ВАЖНО:
 
-        <img
-            class="freeImage"
-            src="images/Бесплатно.png"
-            onerror="this.style.display='none'"
-        >
+        Во время открытия overlay находится
+        поверх header, поэтому этот крестик
+        нажать НЕЛЬЗЯ.
 
-        <div class="freeText">
+        После открытия крестик работает
+        и возвращает в главное меню.
+    -->
 
-            <div class="freeSmall">
-                БЕСПЛАТНО
-            </div>
+    <button
+        class="header-close"
+        onclick="goToMainMenu()"
+    >
 
-            <div class="freeTitle">
-                Бесплатный Пак
-            </div>
+        X
 
-            <div class="freeEvery">
-                каждый день
-            </div>
-
-            <div class="freeTimer" id="freeTimer">
-                Следующий через 0ч 0м 0с
-            </div>
-
-        </div>
-
-        <button class="freeOpen" id="freeOpen">
-            ОТКРЫТЬ
-        </button>
-
-    </div>
+    </button>
 
 
-    <!-- ПОИСК -->
-
-    <div class="searchBox">
-
-        <input
-            id="packSearch"
-            type="text"
-            placeholder="Поиск пака"
-        >
-
-    </div>
+</header>
 
 
-    <div class="sectionTitle">
-        ПАКИ
-    </div>
+
+<!-- =========================================================
+     ГЛАВНОЕ МЕНЮ
+========================================================= -->
+
+<section id="mainMenu">
 
 
-    <!-- SCROLLING СПИСОК ПАКОВ -->
+    <div class="page">
 
-    <div class="packs" id="packs">
 
-        <!-- 1 -->
+        <div class="main-menu-title">
 
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак1.png"
-            >
-
-            <div class="packName">
-                НУБИНИ
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    8 предм.
-                </div>
-
-                <button
-                    class="priceButton"
-                    onclick="buyStars(10, 'Пак НУБИНИ')"
-                >
-                    <span>10</span>
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
+            ГЛАВНОЕ МЕНЮ
 
         </div>
 
 
-        <!-- 2 -->
+        <div class="main-buttons">
 
-        <div class="pack">
 
-            <img
-                class="packImage"
-                src="images/Пак2.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button
-                    class="priceButton"
-                    onclick="buyStars(0, 'Пак 2')"
-                >
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 3 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак3.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 4 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак4.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 5 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак5.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 6 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак6.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 7 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак7.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 8 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак8.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 9 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак9.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- 10 -->
-
-        <div class="pack">
-
-            <img
-                class="packImage"
-                src="images/Пак10.png"
-                onerror="this.style.visibility='hidden'"
-            >
-
-            <div class="packName">
-                НАЗВАНИЕ ПАКА
-            </div>
-
-            <div class="packBottom">
-
-                <div class="itemsCount">
-                    X предм.
-                </div>
-
-                <button class="priceButton">
-                    ???
-                    <img src="images/coin.png">
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     МАГАЗИН
-========================= -->
-
-<div id="shopPage">
-
-    <!-- ЭТО НЕ СКРОЛЛИТСЯ -->
-
-    <div class="shopHeader">
-
-        <div class="shopTitle">
-            МАГАЗИН
-        </div>
-
-        <button
-            class="closeButton"
-            id="closeShop"
-        >
-            X
-        </button>
-
-    </div>
-
-
-    <!-- ТОЛЬКО ЭТО СКРОЛЛИТСЯ -->
-
-    <div class="shopScroll">
-
-
-        <!-- УДАЧА -->
-
-        <div class="shopSectionTitle">
-            УДАЧА
-        </div>
-
-        <div class="luckBox">
-
-            <img
-                class="luckIcon"
-                src="images/2хУдача.png"
-            >
-
-            <div class="luckText">
-
-                <div class="luckTextMain">
-                    Удача Паков
-                </div>
-
-                <div class="luckMultiplier">
-                    1X &gt; <span>2X</span>
-                </div>
-
-                <div class="luckTime">
-                    +15 минут
-                </div>
-
-            </div>
+            <!-- =================================================
+                 МАГАЗИН
+            ================================================= -->
 
             <button
-                class="starButton"
-                onclick="buyStars(29, 'Удача Паков 2X')"
+                class="main-menu-button"
+                onclick="showShop()"
             >
-                <img src="images/TGStar.png">
-                29
+
+                <span class="menu-icon">
+                    🛒
+                </span>
+
+                МАГАЗИН
+
             </button>
 
-        </div>
 
 
-        <!-- GAMEPASSES -->
+            <!-- =================================================
+                 ИНВЕНТАРЬ
+            ================================================= -->
 
-        <div class="shopSectionTitle">
-            ГЕЙМПАССЫ
-        </div>
+            <button
+                class="main-menu-button"
+                onclick="showInventory()"
+            >
 
-        <div class="gamepasses">
+                <span class="menu-icon">
+                    🎒
+                </span>
 
-            <div class="gamepass">
+                ИНВЕНТАРЬ
 
-                <img src="images/coin.png">
+            </button>
 
-                <button
-                    class="starButton"
-                    onclick="buyStars(69, 'x2')"
-                >
-                    <img src="images/TGStar.png">
-                    69
-                </button>
-
-            </div>
-
-
-            <div class="gamepass">
-
-                <img src="images/Скидка.png">
-
-                <button
-                    class="starButton"
-                    onclick="buyStars(299, 'Скидка 50%')"
-                >
-                    <img src="images/TGStar.png">
-                    299
-                </button>
-
-            </div>
-
-
-            <div class="gamepass vip">
-
-                <img src="images/VIP.png">
-
-                <div class="vipInfo">
-                    • [VIP] Имя<br>
-                    • 4x Удача ♾️<br>
-                    • Особая Карта
-                </div>
-
-                <button
-                    class="starButton"
-                    onclick="buyStars(999, 'VIP')"
-                >
-                    <img src="images/TGStar.png">
-                    999
-                </button>
-
-            </div>
 
         </div>
 
-
-        <!-- ПАКИ -->
-
-        <div class="shopSectionTitle">
-            ПАКИ
-        </div>
-
-        <div class="shopPacks">
-
-
-            <div class="shopPack">
-
-                <img
-                    class="shopPackImage"
-                    src="images/АдминПак.png"
-                >
-
-                <div class="shopPackName">
-                    АДМИН ПАК
-                </div>
-
-                <div class="shopPackBottom">
-
-                    <div class="shopItems">
-                        X предм.
-                    </div>
-
-                    <button
-                        class="priceButton"
-                        onclick="buyStars(149, 'Админ Пак')"
-                    >
-                        <img src="images/TGStar.png">
-                        149
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="shopPack">
-
-                <img
-                    class="shopPackImage"
-                    src="images/SecretПак.png"
-                >
-
-                <div class="shopPackName">
-                    SECRET ПАК
-                </div>
-
-                <div class="shopPackBottom">
-
-                    <div class="shopItems">
-                        X предм.
-                    </div>
-
-                    <button
-                        class="priceButton"
-                        onclick="buyStars(299, 'Secret Пак')"
-                    >
-                        <img src="images/TGStar.png">
-                        299
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="shopPack">
-
-                <img
-                    class="shopPackImage"
-                    src="images/67Пак.png"
-                >
-
-                <div class="shopPackName">
-                    67 ПАК
-                </div>
-
-                <div class="shopPackBottom">
-
-                    <div class="shopItems">
-                        X предм.
-                    </div>
-
-                    <button
-                        class="priceButton"
-                        onclick="buyStars(67, '67 Пак')"
-                    >
-                        <img src="images/TGStar.png">
-                        67
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="shopPack">
-
-                <img
-                    class="shopPackImage"
-                    src="images/VIPПак.png"
-                >
-
-                <div class="shopPackName">
-                    VIP ПАК
-                </div>
-
-                <div class="shopPackBottom">
-
-                    <div class="shopItems">
-                        X предм.
-                    </div>
-
-                    <div style="
-                        font-size:14px;
-                        font-weight:900;
-                        text-align:center;
-                    ">
-                        Доступен после<br>
-                        покупки VIP
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- МОНЕТЫ -->
-
-        <div class="shopSectionTitle">
-            МОНЕТЫ
-        </div>
-
-        <div class="coins">
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    50K
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(9, '50K Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    9
-                </button>
-
-            </div>
-
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    400K
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(39, '400K Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    39
-                </button>
-
-            </div>
-
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    2.5M
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(99, '2.5M Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    99
-                </button>
-
-            </div>
-
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    10M
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(249, '10M Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    249
-                </button>
-
-            </div>
-
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    50M
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(499, '50M Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    499
-                </button>
-
-            </div>
-
-
-            <div class="coinProduct">
-
-                <img
-                    class="coin"
-                    src="images/coin.png"
-                >
-
-                <div class="coinAmount">
-                    300M
-                </div>
-
-                <button
-                    class="coinBuy"
-                    onclick="buyStars(999, '300M Монет')"
-                >
-                    <img src="images/TGStar.png">
-                    999
-                </button>
-
-            </div>
-
-        </div>
 
     </div>
 
+
+</section>
+
+
+
+<!-- =========================================================
+     МАГАЗИН
+========================================================= -->
+
+<section id="shopPage">
+
+
+    <div class="page">
+
+
+        <div class="page-title">
+
+            МАГАЗИН
+
+        </div>
+
+
+        <div class="shop-panel">
+
+
+            <div class="pack-shop-card">
+
+
+                <!--
+                    Здесь Pak1 НЕ открывается сразу.
+
+                    Сначала игрок попадает
+                    в магазин.
+                -->
+
+                <img
+                    class="pack-shop-image"
+                    src="images/Пак1.png"
+                    alt="Пак 1"
+                    onclick="showPackPage()"
+                >
+
+
+                <div class="pack-shop-name">
+
+                    Пак 1
+
+                </div>
+
+
+                <div class="pack-shop-price">
+
+                    0 🪙
+
+                </div>
+
+
+                <button
+                    class="open-pack-page-button"
+                    onclick="showPackPage()"
+                >
+
+                    ПОСМОТРЕТЬ ПАК
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     ИНВЕНТАРЬ
+========================================================= -->
+
+<section id="inventoryPage">
+
+
+    <div class="page">
+
+
+        <div class="page-title">
+
+            ИНВЕНТАРЬ
+
+        </div>
+
+
+        <div class="inventory-panel">
+
+            Инвентарь пока пуст
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     СТРАНИЦА ПАКА
+========================================================= -->
+
+<section id="packPage">
+
+
+    <div class="page">
+
+
+        <div class="pack-window">
+
+
+            <!-- =================================================
+                 КАРТИНКА ПАКА
+            ================================================= -->
+
+            <img
+                class="pack-image"
+                src="images/Пак1.png"
+                alt="Пак 1"
+            >
+
+
+
+            <!-- =================================================
+                 ИНФОРМАЦИЯ
+            ================================================= -->
+
+            <div class="info-row">
+
+
+                <div class="info-box">
+
+
+                    <div class="info-title">
+
+                        Цена
+
+                    </div>
+
+
+                    <div class="info-value">
+
+                        0 🪙
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="info-box">
+
+
+                    <div class="info-title">
+
+                        Предметов
+
+                    </div>
+
+
+                    <div class="info-value">
+
+                        5
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 1 / 3 / 5
+            ================================================= -->
+
+            <div class="selection-row">
+
+
+                <button
+                    class="select-button selected"
+                    data-amount="1"
+                    onclick="selectAmount(1)"
+                >
+
+                    1
+
+                </button>
+
+
+                <button
+                    class="select-button"
+                    data-amount="3"
+                    onclick="selectAmount(3)"
+                >
+
+                    3
+
+                </button>
+
+
+                <button
+                    class="select-button"
+                    data-amount="5"
+                    onclick="selectAmount(5)"
+                >
+
+                    5
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 МУТАЦИИ
+            ================================================= -->
+
+            <div class="mutation-row">
+
+
+                <button
+                    class="mutation-button selected"
+                    data-mutation="Normal"
+                    onclick="selectMutation('Normal')"
+                >
+
+                    <span class="normal-text">
+
+                        Normal
+
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="mutation-button"
+                    data-mutation="Gold"
+                    onclick="selectMutation('Gold')"
+                >
+
+                    <span class="gold-text">
+
+                        Gold
+
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="mutation-button"
+                    data-mutation="Diamond"
+                    onclick="selectMutation('Diamond')"
+                >
+
+                    <span class="diamond-text">
+
+                        Diamond
+
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="mutation-button"
+                    data-mutation="Rainbow"
+                    onclick="selectMutation('Rainbow')"
+                >
+
+                    <span class="rainbow-text">
+
+                        Rainbow
+
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ОТКРЫТЬ ПАК
+            ================================================= -->
+
+            <button
+                class="open-button"
+                onclick="startPackOpening()"
+            >
+
+                ОТКРЫТЬ ПАК
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- =====================================================
+             ЧТО МОЖЕТ ВЫПАСТЬ
+        ===================================================== -->
+
+        <section class="drops-section">
+
+
+            <div class="section-title">
+
+                ЧТО МОЖЕТ ВЫПАСТЬ
+
+            </div>
+
+
+            <div class="drops-grid">
+
+
+                <!-- NOOBINI -->
+
+                <div class="drop-card">
+
+
+                    <div class="drop-chance">
+
+                        50%
+
+                    </div>
+
+
+                    <img
+                        class="drop-image"
+                        src="images/NoobiniPizzanini.png"
+                    >
+
+
+                    <div class="drop-name">
+
+                        Noobini Pizzanini
+
+                    </div>
+
+
+                    <div class="drop-price">
+
+                        1 🪙
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- GOLD -->
+
+                <div class="drop-card">
+
+
+                    <div class="drop-chance">
+
+                        30%
+
+                    </div>
+
+
+                    <img
+                        class="drop-image"
+                        src="images/GoldNoobiniPizzanini.png"
+                    >
+
+
+                    <div class="drop-name">
+
+                        Gold Noobini Pizzanini
+
+                    </div>
+
+
+                    <div class="drop-price">
+
+                        1 🪙
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DIAMOND -->
+
+                <div class="drop-card">
+
+
+                    <div class="drop-chance">
+
+                        15%
+
+                    </div>
+
+
+                    <img
+                        class="drop-image"
+                        src="images/DiamondNoobiniPizzanini.png"
+                    >
+
+
+                    <div class="drop-name">
+
+                        Diamond Noobini Pizzanini
+
+                    </div>
+
+
+                    <div class="drop-price">
+
+                        2 🪙
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BLOODROT -->
+
+                <div class="drop-card">
+
+
+                    <div class="drop-chance">
+
+                        4%
+
+                    </div>
+
+
+                    <img
+                        class="drop-image"
+                        src="images/BloodrotNoobiniPizzanini.png"
+                    >
+
+
+                    <div class="drop-name">
+
+                        Bloodrot Noobini Pizzanini
+
+                    </div>
+
+
+                    <div class="drop-price">
+
+                        2 🪙
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- RAINBOW -->
+
+                <div class="drop-card">
+
+
+                    <div class="drop-chance">
+
+                        1%
+
+                    </div>
+
+
+                    <img
+                        class="drop-image"
+                        src="images/RainbowNoobiniPizzanini.png"
+                    >
+
+
+                    <div class="drop-name">
+
+                        Rainbow Noobini Pizzanini
+
+                    </div>
+
+
+                    <div class="drop-price">
+
+                        10 🪙
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     ОКНО ОТКРЫТИЯ
+========================================================= -->
+
+<div id="openingOverlay">
+
+
+    <div class="opening-container">
+
+
+        <!--
+            ДО ПЕРВОГО КЛИКА:
+
+            Normal × 1
+
+            или
+
+            Gold × 3
+        -->
+
+        <div
+            id="openingMutation"
+            class="opening-mutation"
+        >
+
+            Normal × 1
+
+        </div>
+
+
+
+        <!--
+            ДО ПЕРВОГО КЛИКА
+            здесь НИЧЕГО НЕТ.
+
+            ПОСЛЕ ПЕРВОГО КЛИКА:
+
+            50%
+            30%
+            и т.д.
+        -->
+
+        <div
+            id="openingChance"
+            class="opening-chance"
+        >
+
+        </div>
+
+
+
+        <!--
+            СНАЧАЛА:
+
+            Пак1.png
+
+            ПОСЛЕ КЛИКА:
+
+            Карточка
+        -->
+
+        <img
+            id="openingCard"
+            class="opening-card"
+            src="images/Пак1.png"
+            alt=""
+        >
+
+
+
+        <!--
+            СНАЧАЛА:
+
+            Нажми на экран чтобы открыть!
+
+            ПОСЛЕ ПЕРВОГО КЛИКА:
+
+            1/5
+        -->
+
+        <div
+            id="openingHint"
+            class="opening-hint"
+        >
+
+            Нажми на экран чтобы открыть!
+
+        </div>
+
+
+
+        <!--
+            СЧЁТЧИК СНАЧАЛА СКРЫТ.
+        -->
+
+        <div
+            id="openingCounter"
+            class="opening-counter"
+            style="display:none;"
+        >
+
+            1/5
+
+        </div>
+
+
+    </div>
+
+
 </div>
 
-
-<div
-    id="paymentMessage"
-    class="paymentMessage"
-></div>
-
-</div>
 
 
 <script>
 
-/* ==========================================
-   ПЕРЕКЛЮЧЕНИЕ ГЛАВНАЯ / МАГАЗИН
-========================================== */
-
-const mainPage = document.getElementById("mainPage");
-const shopPage = document.getElementById("shopPage");
-
-const shopButton = document.getElementById("shopButton");
-const closeShop = document.getElementById("closeShop");
-
-shopButton.addEventListener("click", () => {
-
-    mainPage.style.display = "none";
-    shopPage.style.display = "flex";
-    shopPage.style.flexDirection = "column";
-
-});
-
-closeShop.addEventListener("click", () => {
-
-    shopPage.style.display = "none";
-    mainPage.style.display = "block";
-
-});
+/* =========================================================
+   ДАННЫЕ ПАКА
+========================================================= */
 
 
-/* ==========================================
-   ПОИСК ПАКОВ
-========================================== */
+/*
+    ВАЖНО:
 
-const search = document.getElementById("packSearch");
-const packs = document.querySelectorAll(".pack");
+    Файл у тебя называется:
 
-search.addEventListener("input", () => {
+    Пак1.png
 
-    const text = search.value.toLowerCase().trim();
+    Поэтому здесь везде используется
+    именно Пак1.png.
+*/
 
-    packs.forEach(pack => {
-
-        const name =
-            pack
-                .querySelector(".packName")
-                .textContent
-                .toLowerCase();
-
-        if (name.includes(text)) {
-            pack.style.display = "flex";
-        } else {
-            pack.style.display = "none";
-        }
-
-    });
-
-});
+const PACK_IMAGE =
+    "images/Пак1.png";
 
 
-/* ==========================================
-   БЕСПЛАТНЫЙ ПАК — 24 ЧАСА
-========================================== */
+/*
+    В одном паке 5 предметов.
+*/
 
-const timerElement =
-    document.getElementById("freeTimer");
-
-const openButton =
-    document.getElementById("freeOpen");
-
-const FREE_TIME =
-    24 * 60 * 60 * 1000;
-
-let nextFreePack =
-    localStorage.getItem("nextFreePack");
+const CARDS_PER_PACK = 5;
 
 
-if (!nextFreePack) {
+/*
+    Сколько паков выбрал игрок.
 
-    /* первый вход */
+    1 / 3 / 5
+*/
 
-    openButton.style.display = "block";
+let selectedAmount = 1;
 
-    timerElement.textContent =
-        "Пак доступен!";
 
-} else {
+/*
+    Выбранная мутация.
+*/
 
-    nextFreePack =
-        Number(nextFreePack);
+let selectedMutation = "Normal";
 
-    updateFreeTimer();
 
+/*
+    Какой пак сейчас открываем.
+
+    Например:
+
+    1
+    2
+    3
+*/
+
+let currentPack = 1;
+
+
+/*
+    Какая карточка сейчас.
+
+    0 = ещё не начали
+
+    1 = первая
+
+    ...
+
+    5 = пятая
+*/
+
+let currentCard = 0;
+
+
+/*
+    Открытие сейчас идёт или нет.
+*/
+
+let openingActive = false;
+
+
+
+/* =========================================================
+   ПРЕДМЕТЫ
+========================================================= */
+
+const PACK_ITEMS = [
+
+    {
+        name: "Noobini Pizzanini",
+
+        chance: 50,
+
+        image:
+            "images/NoobiniPizzanini.png"
+    },
+
+
+    {
+        name: "Gold Noobini Pizzanini",
+
+        chance: 30,
+
+        image:
+            "images/GoldNoobiniPizzanini.png"
+    },
+
+
+    {
+        name: "Diamond Noobini Pizzanini",
+
+        chance: 15,
+
+        image:
+            "images/DiamondNoobiniPizzanini.png"
+    },
+
+
+    {
+        name: "Bloodrot Noobini Pizzanini",
+
+        chance: 4,
+
+        image:
+            "images/BloodrotNoobiniPizzanini.png"
+    },
+
+
+    {
+        name: "Rainbow Noobini Pizzanini",
+
+        chance: 1,
+
+        image:
+            "images/RainbowNoobiniPizzanini.png"
+    }
+
+];
+
+
+
+/* =========================================================
+   ПОКАЗАТЬ ТОЛЬКО ОДНУ СТРАНИЦУ
+========================================================= */
+
+function hideAllPages() {
+
+    document.getElementById(
+        "mainMenu"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "shopPage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "inventoryPage"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "packPage"
+    ).style.display = "none";
 }
 
 
-function updateFreeTimer() {
 
-    const now = Date.now();
+/* =========================================================
+   ГЛАВНОЕ МЕНЮ
+========================================================= */
 
-    let remaining =
-        nextFreePack - now;
+function showMainMenu() {
+
+    hideAllPages();
 
 
-    if (remaining <= 0) {
+    document.getElementById(
+        "mainMenu"
+    ).style.display = "block";
 
-        timerElement.textContent =
-            "Пак доступен!";
 
-        openButton.style.display =
-            "block";
+    window.scrollTo(
+        0,
+        0
+    );
+}
+
+
+
+/* =========================================================
+   МАГАЗИН
+========================================================= */
+
+function showShop() {
+
+    /*
+        Во время открытия эту функцию
+        вызвать нельзя, потому что overlay
+        находится поверх всего.
+    */
+
+    if (openingActive) {
 
         return;
+
     }
 
 
-    openButton.style.display =
-        "none";
+    hideAllPages();
 
 
-    let seconds =
-        Math.floor(remaining / 1000);
-
-    const hours =
-        Math.floor(seconds / 3600);
-
-    seconds %= 3600;
-
-    const minutes =
-        Math.floor(seconds / 60);
-
-    seconds %= 60;
+    document.getElementById(
+        "shopPage"
+    ).style.display = "block";
 
 
-    timerElement.textContent =
-        `Следующий через ${hours}ч ${minutes}м ${seconds}с`;
-
+    window.scrollTo(
+        0,
+        0
+    );
 }
 
 
-setInterval(updateFreeTimer, 1000);
+
+/* =========================================================
+   ИНВЕНТАРЬ
+========================================================= */
+
+function showInventory() {
+
+    if (openingActive) {
+
+        return;
+
+    }
 
 
-/* ==========================================
-   ОТКРЫТИЕ БЕСПЛАТНОГО ПАКА
-========================================== */
+    hideAllPages();
 
-openButton.addEventListener("click", () => {
+
+    document.getElementById(
+        "inventoryPage"
+    ).style.display = "block";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+}
+
+
+
+/* =========================================================
+   СТРАНИЦА ПАКА
+========================================================= */
+
+function showPackPage() {
+
+    if (openingActive) {
+
+        return;
+
+    }
+
+
+    hideAllPages();
+
+
+    document.getElementById(
+        "packPage"
+    ).style.display = "block";
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+}
+
+
+
+/* =========================================================
+   КРЕСТИК
+========================================================= */
+
+function goToMainMenu() {
 
     /*
-       Пока ничего не выдаём.
-       Просто запускаем таймер.
+        Если пак сейчас открывается,
+        крестик ничего не делает.
+
+        Игрок должен закончить открытие.
     */
 
-    nextFreePack =
-        Date.now() + FREE_TIME;
+    if (openingActive) {
 
-    localStorage.setItem(
-        "nextFreePack",
-        nextFreePack
+        return;
+
+    }
+
+
+    showMainMenu();
+}
+
+
+
+/* =========================================================
+   ВЫБОР 1 / 3 / 5
+========================================================= */
+
+function selectAmount(amount) {
+
+    if (openingActive) {
+
+        return;
+
+    }
+
+
+    selectedAmount = amount;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".select-button"
+        );
+
+
+    buttons.forEach(
+        function(button) {
+
+            const value =
+                Number(
+                    button.dataset.amount
+                );
+
+
+            if (value === amount) {
+
+                button.classList.add(
+                    "selected"
+                );
+
+            }
+
+            else {
+
+                button.classList.remove(
+                    "selected"
+                );
+
+            }
+
+        }
     );
+}
 
-    openButton.style.display =
+
+
+/* =========================================================
+   ВЫБОР МУТАЦИИ
+========================================================= */
+
+function selectMutation(mutation) {
+
+    if (openingActive) {
+
+        return;
+
+    }
+
+
+    selectedMutation =
+        mutation;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".mutation-button"
+        );
+
+
+    buttons.forEach(
+        function(button) {
+
+            if (
+                button.dataset.mutation ===
+                mutation
+            ) {
+
+                button.classList.add(
+                    "selected"
+                );
+
+            }
+
+            else {
+
+                button.classList.remove(
+                    "selected"
+                );
+
+            }
+
+        }
+    );
+}
+
+
+
+/* =========================================================
+   НАЧАТЬ ОТКРЫТИЕ
+========================================================= */
+
+function startPackOpening() {
+
+    /*
+        Запоминаем,
+        что открытие началось.
+    */
+
+    openingActive = true;
+
+
+    /*
+        Начинаем с первого пака.
+    */
+
+    currentPack = 1;
+
+
+    /*
+        Карточки ещё нет.
+    */
+
+    currentCard = 0;
+
+
+    /*
+        Получаем элементы.
+    */
+
+    const overlay =
+        document.getElementById(
+            "openingOverlay"
+        );
+
+
+    const mutation =
+        document.getElementById(
+            "openingMutation"
+        );
+
+
+    const chance =
+        document.getElementById(
+            "openingChance"
+        );
+
+
+    const card =
+        document.getElementById(
+            "openingCard"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "openingHint"
+        );
+
+
+    const counter =
+        document.getElementById(
+            "openingCounter"
+        );
+
+
+    /*
+        Показываем:
+
+        Normal × 1
+
+        Gold × 3
+
+        Diamond × 5
+
+        и т.д.
+
+        То есть × количество паков.
+    */
+
+    mutation.textContent =
+        selectedMutation +
+        " × " +
+        selectedAmount;
+
+
+    /*
+        Пока это ещё пак,
+        процента нет.
+    */
+
+    chance.textContent = "";
+
+
+    /*
+        Показываем Пак1.
+    */
+
+    card.src =
+        PACK_IMAGE;
+
+
+    /*
+        Подсказка.
+    */
+
+    hint.textContent =
+        "Нажми на экран чтобы открыть!";
+
+
+    /*
+        Счётчик скрыт.
+    */
+
+    counter.style.display =
         "none";
 
-    updateFreeTimer();
-
-});
-
-
-/* ==========================================
-   TELEGRAM STARS
-========================================== */
-
-function buyStars(amount, productName) {
 
     /*
-       ВАЖНО:
-
-       Настоящая покупка Telegram Stars
-       должна проходить через Telegram Invoice.
-
-       Сам HTML-файл не должен создавать
-       invoice самостоятельно.
-
-       Когда подключим Bot API,
-       сюда будет передаваться ссылка
-       на invoice.
+        Показываем затемнение.
     */
 
+    overlay.classList.add(
+        "active"
+    );
+
+
+    /*
+        Запрещаем прокрутку страницы.
+    */
+
+    document.body.classList.add(
+        "opening-lock"
+    );
+}
+
+
+
+/* =========================================================
+   СЛУЧАЙНЫЙ ПРЕДМЕТ
+========================================================= */
+
+function getRandomItem() {
+
+    /*
+        Например:
+
+        0 - 50
+        = Noobini
+
+        50 - 80
+        = Gold
+
+        80 - 95
+        = Diamond
+
+        95 - 99
+        = Bloodrot
+
+        99 - 100
+        = Rainbow
+    */
+
+    const random =
+        Math.random() * 100;
+
+
+    let total = 0;
+
+
+    for (
+        const item of PACK_ITEMS
+    ) {
+
+        total +=
+            item.chance;
+
+
+        if (
+            random < total
+        ) {
+
+            return item;
+
+        }
+    }
+
+
+    /*
+        Запасной вариант.
+    */
+
+    return PACK_ITEMS[
+        PACK_ITEMS.length - 1
+    ];
+}
+
+
+
+/* =========================================================
+   ОДИН КЛИК = ОДНО ДЕЙСТВИЕ
+========================================================= */
+
+function handleOpeningClick() {
+
+    /*
+        Если открытие почему-то
+        уже закрыто — ничего.
+    */
+
+    if (!openingActive) {
+
+        return;
+
+    }
+
+
+    /*
+        Если уже было 5/5,
+        следующий клик полностью
+        заканчивает открытие.
+    */
 
     if (
-        window.Telegram &&
-        Telegram.WebApp &&
-        typeof Telegram.WebApp.openInvoice === "function"
+        currentCard >=
+        CARDS_PER_PACK
+    ) {
+
+        finishOpening();
+
+        return;
+
+    }
+
+
+    /*
+        Иначе открываем следующую карту.
+    */
+
+    revealNextCard();
+}
+
+
+
+/* =========================================================
+   ОТКРЫТЬ СЛЕДУЮЩУЮ КАРТУ
+========================================================= */
+
+function revealNextCard() {
+
+    /*
+        Увеличиваем номер.
+
+        0 → 1
+        1 → 2
+        ...
+        4 → 5
+    */
+
+    currentCard++;
+
+
+    /*
+        Получаем случайную карточку.
+    */
+
+    const item =
+        getRandomItem();
+
+
+    /*
+        Получаем элементы.
+    */
+
+    const card =
+        document.getElementById(
+            "openingCard"
+        );
+
+
+    const mutation =
+        document.getElementById(
+            "openingMutation"
+        );
+
+
+    const chance =
+        document.getElementById(
+            "openingChance"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "openingHint"
+        );
+
+
+    const counter =
+        document.getElementById(
+            "openingCounter"
+        );
+
+
+    /*
+        Очень важно:
+
+        После первого клика
+        Normal × 1 исчезает.
+
+        Вместо него сверху
+        появляется шанс.
+
+        Например:
+
+        50%
+    */
+
+    mutation.textContent = "";
+
+
+    chance.textContent =
+        item.chance + "%";
+
+
+    /*
+        Показываем выпавшую карту.
+    */
+
+    card.src =
+        item.image;
+
+
+    /*
+        Теперь вместо
+        "Нажми на экран чтобы открыть!"
+
+        показываем:
+
+        1/5
+    */
+
+    counter.style.display =
+        "block";
+
+
+    counter.textContent =
+        currentCard +
+        "/" +
+        CARDS_PER_PACK;
+
+
+    /*
+        Проверяем последнюю карту.
+    */
+
+    if (
+        currentCard ===
+        CARDS_PER_PACK
     ) {
 
         /*
-           Здесь позже будет invoice URL,
-           который создаст твой бот.
+            После 5/5 игрок должен
+            нажать ещё один раз.
 
-           Например:
-
-           Telegram.WebApp.openInvoice(
-               invoiceUrl,
-               callback
-           );
+            Только этот следующий клик
+            уберёт всё.
         */
 
-        showMessage(
-            `Открытие покупки: ${productName} — ${amount} ⭐`
-        );
-
-    } else {
-
-        showMessage(
-            `${productName}: ${amount} ⭐`
-        );
+        hint.textContent =
+            "";
 
     }
 
+    else {
+
+        /*
+            Между картами подсказка
+            остаётся пустой.
+
+            Игрок просто кликает экран.
+        */
+
+        hint.textContent =
+            "";
+
+    }
 }
 
 
-/* ==========================================
-   СООБЩЕНИЕ
-========================================== */
 
-function showMessage(text) {
+/* =========================================================
+   ПОЛНОСТЬЮ ЗАКОНЧИТЬ ОТКРЫТИЕ
+========================================================= */
 
-    const box =
+function finishOpening() {
+
+    /*
+        Если выбрано несколько паков,
+        после 5/5 одного пака
+        начинаем следующий.
+
+        Например:
+
+        3 пака:
+
+        Пак 1 → 5 карт
+        Пак 2 → 5 карт
+        Пак 3 → 5 карт
+    */
+
+    if (
+        currentPack <
+        selectedAmount
+    ) {
+
+
+        currentPack++;
+
+
+        currentCard = 0;
+
+
+        const mutation =
+            document.getElementById(
+                "openingMutation"
+            );
+
+
+        const chance =
+            document.getElementById(
+                "openingChance"
+            );
+
+
+        const card =
+            document.getElementById(
+                "openingCard"
+            );
+
+
+        const hint =
+            document.getElementById(
+                "openingHint"
+            );
+
+
+        const counter =
+            document.getElementById(
+                "openingCounter"
+            );
+
+
+        /*
+            Новый пак.
+        */
+
+        mutation.textContent =
+            selectedMutation +
+            " × " +
+            selectedAmount;
+
+
+        /*
+            Процента пока нет.
+        */
+
+        chance.textContent = "";
+
+
+        /*
+            Возвращаем картинку пака.
+        */
+
+        card.src =
+            PACK_IMAGE;
+
+
+        /*
+            Снова показываем подсказку.
+        */
+
+        hint.textContent =
+            "Нажми на экран чтобы открыть!";
+
+
+        /*
+            Скрываем счётчик.
+        */
+
+        counter.style.display =
+            "none";
+
+
+        return;
+
+    }
+
+
+    /*
+        Если все выбранные паки
+        уже открыты —
+
+        закрываем всё.
+    */
+
+    closeOpeningOverlay();
+}
+
+
+
+/* =========================================================
+   ЗАКРЫТЬ ОКНО ОТКРЫТИЯ
+========================================================= */
+
+function closeOpeningOverlay() {
+
+    const overlay =
         document.getElementById(
-            "paymentMessage"
+            "openingOverlay"
         );
 
-    box.textContent = text;
 
-    box.style.display = "block";
+    /*
+        Убираем затемнение.
+    */
 
-    setTimeout(() => {
+    overlay.classList.remove(
+        "active"
+    );
 
-        box.style.display = "none";
 
-    }, 2500);
+    /*
+        Разрешаем прокрутку.
+    */
 
+    document.body.classList.remove(
+        "opening-lock"
+    );
+
+
+    /*
+        Открытие закончено.
+    */
+
+    openingActive = false;
+
+
+    /*
+        Сбрасываем прогресс.
+    */
+
+    currentPack = 1;
+
+    currentCard = 0;
+
+
+    /*
+        Возвращаем исходный вид.
+    */
+
+    const mutation =
+        document.getElementById(
+            "openingMutation"
+        );
+
+
+    const chance =
+        document.getElementById(
+            "openingChance"
+        );
+
+
+    const card =
+        document.getElementById(
+            "openingCard"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "openingHint"
+        );
+
+
+    const counter =
+        document.getElementById(
+            "openingCounter"
+        );
+
+
+    mutation.textContent =
+        selectedMutation +
+        " × " +
+        selectedAmount;
+
+
+    chance.textContent = "";
+
+
+    card.src =
+        PACK_IMAGE;
+
+
+    hint.textContent =
+        "Нажми на экран чтобы открыть!";
+
+
+    counter.style.display =
+        "none";
 }
+
+
+
+/* =========================================================
+   КЛИК ПО ЭКРАНУ ПРИ ОТКРЫТИИ
+========================================================= */
+
+/*
+    ВАЖНО:
+
+    Здесь обработчик стоит
+    НА ВСЁМ overlay.
+
+    Поэтому во время открытия
+    игроку не нужно попадать
+    именно в картинку.
+
+    Можно нажать в любое место
+    экрана.
+
+    Один клик = одно действие.
+*/
+
+document
+    .getElementById(
+        "openingOverlay"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            /*
+                Останавливаем стандартное
+                поведение браузера.
+            */
+
+            event.preventDefault();
+
+
+            /*
+                Выполняем только действие
+                открытия.
+            */
+
+            handleOpeningClick();
+
+        }
+    );
+
+
+
+/* =========================================================
+   БЛОКИРУЕМ СКРОЛЛ ВО ВРЕМЯ ОТКРЫТИЯ
+========================================================= */
+
+document.addEventListener(
+    "wheel",
+    function(event) {
+
+        if (openingActive) {
+
+            event.preventDefault();
+
+        }
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+
+/* =========================================================
+   БЛОКИРУЕМ СВАЙПЫ
+========================================================= */
+
+document.addEventListener(
+    "touchmove",
+    function(event) {
+
+        if (openingActive) {
+
+            event.preventDefault();
+
+        }
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+
+/* =========================================================
+   БЛОКИРУЕМ КЛАВИАТУРУ
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (!openingActive) {
+
+            return;
+
+        }
+
+
+        /*
+            Пока идёт открытие,
+            клавиатура ничего не делает.
+        */
+
+        event.preventDefault();
+
+    }
+);
+
+
+
+/* =========================================================
+   ESC ТОЖЕ НЕ РАБОТАЕТ ВО ВРЕМЯ ОТКРЫТИЯ
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape" &&
+            !openingActive
+        ) {
+
+            showMainMenu();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   ПРИ ЗАПУСКЕ
+========================================================= */
+
+/*
+    ВОТ ЭТО ОЧЕНЬ ВАЖНО.
+
+    При загрузке сайта
+    ВСЕГДА показываем главное меню.
+
+    НЕ магазин.
+    НЕ пак.
+    НЕ окно открытия.
+*/
+
+hideAllPages();
+
+
+document.getElementById(
+    "mainMenu"
+).style.display = "block";
+
+
+/*
+    Окно открытия точно закрыто.
+*/
+
+document.getElementById(
+    "openingOverlay"
+).classList.remove(
+    "active"
+);
+
+
+document.body.classList.remove(
+    "opening-lock"
+);
 
 </script>
 
+
 </body>
+
 </html>
